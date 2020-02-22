@@ -167,6 +167,7 @@
 
 <script>
 import StarRating from 'vue-star-rating'
+import axios from 'axios'
 export default {
     components: {
       StarRating
@@ -207,7 +208,7 @@ export default {
       },
 
       send2API: function(){
-        console.log('email: ' + this.email)
+        /*console.log('email: ' + this.email)
         console.log('city: ' + this.city)
         console.log('age: ' + this.age)
         console.log('heard:' + this.heard)
@@ -216,7 +217,7 @@ export default {
         console.log('newsletter: ' +  this.newsletter)
         this.places.forEach((place, index) => console.log(place + ': ' + this.placesStars[index]))
         console.log('serviceGroup: ' + this.serviceGroup)
-        this.services[this.serviceGroup].forEach((service, index) => console.log(service + ': ' + this.servicesStars[index]))
+        this.services[this.serviceGroup].forEach((service, index) => console.log(service + ': ' + this.servicesStars[index]))*/
 
         this.step = 0
 
@@ -240,7 +241,18 @@ export default {
         Vendégvezető segítőkészsége: 4
         */
 
-        /*Mailchimp: form action="https://krisnavolgy.us8.list-manage.com/subscribe/post?u=ad07ffcfc8e16e5c5f1595fa3&amp;id=20fdc26fb9" method="post"*/
+
+        if(this.newsletter) {
+          axios.post(
+            process.env.VUE_APP_API_URL,
+            {
+              status: 'subscribed',
+              email_address: this.email,
+              marketing_permissions: [{marketing_permission_id: process.env.VUE_APP_MAILCHIMP_MARKETING_PERMISSION_ID, text: "Elfogadom", enabled: true}]
+            })
+            .then(resp => console.log(resp))
+            .catch(error => console.error(error))
+        }
       }
     }
 }
