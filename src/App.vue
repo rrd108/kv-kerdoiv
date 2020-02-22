@@ -21,25 +21,26 @@ export default {
 </script>
 
 <style>
-@import url('https://fonts.googleapis.com/css?family=Quicksand:500');
-@import url('./assets/foundation.min.css');
-@import url('./assets/foundation-icons.css');
+@import url("https://fonts.googleapis.com/css?family=Quicksand:500");
+@import url("./assets/foundation.min.css");
+@import url("./assets/foundation-icons.css");
 
 #app {
-  font-family: 'Quicksand', sans-serif;
+  font-family: "Quicksand", sans-serif;
   background-color: #efdfd2;
   color: #574634;
-  background-image: url('./assets/background.png');
+  background-image: url("./assets/background.png");
   min-height: 100vh;
   font-size: 2rem;
 }
 
 #app h3 {
-  font-family: 'Quicksand', sans-serif;
+  font-family: "Quicksand", sans-serif;
   font-weight: bold;
 }
 
-#app label, #app input {
+#app label,
+#app input {
   font-size: 2rem;
 }
 
