@@ -1,5 +1,6 @@
 <template>
   <form @submit.prevent="send2API" class="column small-12">
+
       <div v-show="step === 0">
         <div class="row">
             <label for="email" class="column small-12">Email címed</label>
@@ -50,23 +51,23 @@
         <div class="row">
           <div class="column small-12">
             <div class="row">
-                <input v-model="heard" id="from_facebook" type="checkbox" value="facebook">
+                <input v-model="heard" id="from_facebook" type="checkbox" value="fb">
                 <label for="from_facebook">Facebook</label>
             </div>
             <div class="row">
-                <input v-model="heard" id="from_krisnavolgyhu" type="checkbox" value="krisnavolgy.hu">
+                <input v-model="heard" id="from_krisnavolgyhu" type="checkbox" value="kv">
                 <label for="from_krisnavolgyhu">krisnavolgy.hu</label>
             </div>
             <div class="row">
-                <input v-model="heard" id="from_instagram" type="checkbox" value="instagram">
+                <input v-model="heard" id="from_instagram" type="checkbox" value="inst">
                 <label for="from_instagram">Instagram</label>
             </div>
             <div class="row">
-                <input v-model="heard" id="from_plakat" type="checkbox" value="plakat">
+                <input v-model="heard" id="from_plakat" type="checkbox" value="plak">
                 <label for="from_plakat">Plakát</label>
             </div>
             <div class="row">
-                <input v-model="heard" id="from_ujsag" type="checkbox" value="ujsag">
+                <input v-model="heard" id="from_ujsag" type="checkbox" value="ujs">
                 <label for="from_ujsag">Újság</label>
             </div>
             <div class="row">
@@ -99,13 +100,13 @@
       <div class="row">
           <p class="faded column small-12">Ha nem láttad, akkor hagyd üresen</p>
       </div>
-      <div class="row" v-for="(place, index) in places" :key="index">
+      <div class="row" v-for="(place, index) in places" :key="place[0]">
         <div class="column small-6">
-          <label :for="'place-' + index">{{place}}</label>
+          <label>{{place[1]}}</label>
         </div>
         <div class="column small-6">
           <star-rating
-            v-model="placesStars[index]"
+            v-model="places[index][2]"
             inactive-color="#bbb"
             active-color="#574634"
             :max-rating="4"
@@ -124,18 +125,21 @@
       <div class="row">
           <p class="faded column small-12">Ha nem tudod, akkor hagyd üresen</p>
       </div>
-      <div class="row" v-for="(service, index) in services[serviceGroup]" :key="index">
+      <div class="row" v-for="(service, index) in services[serviceGroup]" :key="service[0]">
         <div class="column small-6">
-          <label :for="'service-' + index">{{service}}</label>
+          <label>{{service[1]}}</label>
         </div>
         <div class="column small-6">
           <star-rating
-            v-model="servicesStars[index]"
+            v-model="services[serviceGroup][index][2]"
             inactive-color="#bbb"
             active-color="#574634"
             :max-rating="4"
             :show-rating="false"></star-rating>
         </div>
+      </div>
+      <div class="row">
+        <input v-model="egyeb" type="text" placeholder="egyéb észrevétel">
       </div>
     </div>
 
@@ -147,18 +151,18 @@
 
     <div v-show="step === 7">
       <div class="row">
-            <label for="gdpr_2125" class="column small-12">Hírlevél feliratkozás</label>
+            <label for="newsletter" class="column small-12">Hírlevél feliratkozás</label>
         </div>
         <div class="row">
             <p class="faded column small-12">Maradjunk kapcsolatban! Íratkozz fel a hírlevelünkre. 1-2 emailt küldünk havonta sok érdekeséggel!</p>
         </div>
         <div class="row">
-            <input v-model="newsletter" id="gdpr_2125" name="gdpr[2125]" value="Y" type="checkbox" style="width:1em" checked>
-            <label for="gdpr_2125">Feliratkozom</label>
+            <input v-model="newsletter" id="newsletter" type="checkbox" style="width:1em" checked>
+            <label for="newsletter">Feliratkozom</label>
             <p class="faded column small-12">Elfogadom a krisnavolgy.hu oldalon található adatkezelési tájékoztatót, az adatkezeléshez hozzájárulok.</p>
         </div>
         <div class="row align-center">
-          <button type="submit" name="subscribe" class="button">Válaszok elküldése</button>
+          <button type="submit" name="subscribe" class="button">Beküldés</button>
         </div>
     </div>
   </form>
@@ -168,93 +172,108 @@
 <script>
 import StarRating from 'vue-star-rating'
 import axios from 'axios'
+
 export default {
-    components: {
-      StarRating
-    },
-    data() {
-      return {
-          age: 25,
-          city: '',
-          cities: [
-              'Külföld', 'Budapest', 'Bács-Kiskun', 'Baranya', 'Békés', 'Borsod-Abaúj-Zemplén', 'Csongrád', 'Fejér', 'Győr-Moson-Sopron', 'Hajdú-Bihar', 'Heves', 'Jász-Nagykun-Szolnok', 'Komárom-Esztergom', 'Nógrád', 'Pest', 'Somogy', 'Szabolcs-Szatmár-Bereg', 'Tolna', 'Vas', 'Veszprém', 'Zala'
+  components: {
+    StarRating
+  },
+  data() {
+    return {
+      age: 25,
+      city: '',
+      cities: [
+          'Külföld', 'Budapest', 'Bács-Kiskun', 'Baranya', 'Békés', 'Borsod-Abaúj-Zemplén', 'Csongrád', 'Fejér', 'Győr-Moson-Sopron', 'Hajdú-Bihar', 'Heves', 'Jász-Nagykun-Szolnok', 'Komárom-Esztergom', 'Nógrád', 'Pest', 'Somogy', 'Szabolcs-Szatmár-Bereg', 'Tolna', 'Vas', 'Veszprém', 'Zala'
+      ],
+      email: '',
+      egyeb: '',
+      heard: [],
+      heardOther: '',
+      newsletter: true,
+      places: [
+        ['tpl', 'Templom', 0],
+        ['ett', 'Étterem', 0],
+        ['gos', 'Tehénvédelmi központ', 0],
+        ['kert', 'Kertészet', 0],
+        ['szab', 'Szabadtér', 0]],
+      services: {
+        'Vendégvezetés' :
+          [
+            ['vv_felk', 'Vendégvezető felkészültsége', 0],
+            ['vv_inf', 'Információ hasznossága', 0],
+            ['vv_eloa', 'Vendégvezető előadásmódja', 0],
+            ['vv_seg', 'Vendégvezető segítőkészsége', 0]
           ],
-          email: '',
-          heard: [],
-          heardOther: '',
-          newsletter: true,
-          places: ['Templom', 'Étterem', 'Tehénvédelmi központ', 'Kertészet', 'Szabadtér'],
-          placesStars: [0,0,0,0,0,0,0],
-          services: {
-            'Vendégvezetés' : ['Vendégvezető felkészültsége', 'Információ hasznossága', 'Vendégvezető előadásmódja', 'Vendégvezető segítőkészsége'],
-            'Étterem' : ['Választék', 'Kiszolgálás gyorsasága', 'Menü mennyisége', 'Menü minősége', 'Menü ára'],
-            'Ajándékbolt' : ['Választék', 'Kiszolgálás minősége']
-            },
-          serviceGroup: '',
-          servicesStars: [0,0,0,0,0,0,0],
-          step: 0,
-          visits: 1,
-      }
+        'Étterem' :
+          [
+            ['ett_val', 'Választék', 0],
+            ['ett_gyo', 'Kiszolgálás gyorsasága', 0],
+            ['ett_men', 'Menü mennyisége', 0],
+            ['ett_min', 'Menü minősége', 0],
+            ['ett_ar', 'Menü ára', 0]
+          ],
+        'Ajándékbolt' :
+          [
+            ['sh_val', 'Választék', 0],
+            ['sh_kisz', 'Kiszolgálás minősége', 0]
+          ]
+        },
+      serviceGroup: '',
+      sg: '',
+      step: 0,
+      visits: 1,
+    }
+  },
+
+  created: function(){
+    let serviceGroups = Object.keys(this.services)
+    this.serviceGroup = serviceGroups[serviceGroups.length * Math.random() << 0]
+    if (this.serviceGroup == 'Vendégvezetés') this.sg = 'vv'
+    if (this.serviceGroup == 'Étterem') this.sg = 'ett'
+    if (this.serviceGroup == 'Ajándékbolt') this.sg = 'sh'
+  },
+  methods : {
+    stepChange: function(step){
+        this.step += step
+        this.$emit('stepChange', this.step)
     },
 
-    created: function(){
-      let serviceGroups = Object.keys(this.services)
-      this.serviceGroup = serviceGroups[serviceGroups.length * Math.random() << 0]
-    },
-    methods : {
-      stepChange: function(step){
-          this.step += step
-          this.$emit('stepChange', this.step)
-      },
-
-      send2API: function(){
-        /*console.log('email: ' + this.email)
-        console.log('city: ' + this.city)
-        console.log('age: ' + this.age)
-        console.log('heard:' + this.heard)
-        console.log('heardOther: ' + this.heardOther)
-        console.log('visits: ' + this.visits)
-        console.log('newsletter: ' +  this.newsletter)
-        this.places.forEach((place, index) => console.log(place + ': ' + this.placesStars[index]))
-        console.log('serviceGroup: ' + this.serviceGroup)
-        this.services[this.serviceGroup].forEach((service, index) => console.log(service + ': ' + this.servicesStars[index]))*/
-
-        this.step = 0
-
-        /*
-        email: rrd@krisna.hu
-        city: Somogy
-        age: 45
-        heard:facebook,krisnavolgy.hu
-        heardOther: barátok
-        visits: 20
-        newsletter: true
-        Templom: 4
-        Étterem: 3
-        Tehénvédelmi központ: 2
-        Kertészet: 1
-        Szabadtér: 0
-        serviceGroup: Vendégvezetés
-        Vendégvezető felkészültsége: 1
-        Információ hasznossága: 2
-        Vendégvezető előadásmódja: 3
-        Vendégvezető segítőkészsége: 4
-        */
-
-
-        if(this.newsletter) {
-          axios.post(
-            process.env.VUE_APP_API_URL,
-            {
-              status: 'subscribed',
-              email_address: this.email,
-              marketing_permissions: [{marketing_permission_id: process.env.VUE_APP_MAILCHIMP_MARKETING_PERMISSION_ID, text: "Elfogadom", enabled: true}]
-            })
-            .then(resp => console.log(resp))
-            .catch(error => console.error(error))
+    send2API: function(){
+      axios.post(
+        process.env.VUE_APP_API_URL,
+        {
+          email: this.email,
+          city: this.city,
+          age: this.age,
+          heard: this.heard,
+          heardOther: this.heardOther,
+          visits: this.visits,
+          places: this.places,
+          services: this.services,
+          newsletter: this.newsletter,
+          vv_egyeb: this.sg == 'vv' ? this.egyeb : '',
+          ett_egyeb: this.sg == 'ett' ? this.egyeb : '',
+          sh_egyeb:  this.sg == 'sh' ? this.egyeb : '',
         }
+      )
+      .then(resp => {
+        this.step = 0
+        console.log(resp)
+      })
+      .catch(error => console.error(error))
+
+      if (this.newsletter) {
+        axios.post(
+          process.env.VUE_APP_API_URL,
+          {
+            status: 'subscribed',
+            email_address: this.email,
+            marketing_permissions: [{marketing_permission_id: process.env.VUE_APP_MAILCHIMP_MARKETING_PERMISSION_ID, text: "Elfogadom", enabled: true}]
+          })
+          .then(resp => console.log(resp))
+          .catch(error => console.error(error))
       }
     }
+  }
 }
 </script>
 
