@@ -2,7 +2,7 @@
 node_modules
 /dist
 
-/api/secrets.php
+api/secrets.php
 
 # local env files
 .env.local
