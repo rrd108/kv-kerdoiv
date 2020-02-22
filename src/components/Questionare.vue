@@ -224,13 +224,17 @@ export default {
     }
   },
 
-  created: function(){
-    let serviceGroups = Object.keys(this.services)
-    this.serviceGroup = serviceGroups[serviceGroups.length * Math.random() << 0]
-    if (this.serviceGroup == 'Vendégvezetés') this.sg = 'vv'
-    if (this.serviceGroup == 'Étterem') this.sg = 'ett'
-    if (this.serviceGroup == 'Ajándékbolt') this.sg = 'sh'
+  created: function() {
+    this.setServiceGroup()
   },
+  methods : {
+    setServiceGroup: function() {
+      let serviceGroups = Object.keys(this.services)
+      this.serviceGroup = serviceGroups[serviceGroups.length * Math.random() << 0]
+      if (this.serviceGroup == 'Vendégvezetés') this.sg = 'vv'
+      if (this.serviceGroup == 'Étterem') this.sg = 'ett'
+      if (this.serviceGroup == 'Ajándékbolt') this.sg = 'sh'
+    },
     send2API: function(){
       axios.post(
         process.env.VUE_APP_API_URL,
@@ -253,6 +257,14 @@ export default {
         console.log(resp)
 
         this.$store.commit('setStep', 0)
+        this.email = this.city = this.heardOther = this.egyeb = this.sg = ''
+        this.age = 25
+        this.heard = []
+        this.visits = 1
+        this.places.forEach(place => place[2] = 0)
+        this.services[this.serviceGroup].forEach(service => service[2] = 0)
+        this.newsletter = true
+        this.setServiceGroup()
       })
       .catch(error => console.error(error))
 
