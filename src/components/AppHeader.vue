@@ -4,7 +4,7 @@
       <img src="../assets/logo.png">
     </div>
     <nav class="column small-8">
-      <h1>Kérdőív {{step+1}} / 8</h1>
+      <h1>Kérdőív {{this.$store.state.step+1}} / 8</h1>
     </nav>
   </header>
 </template>
@@ -12,7 +12,6 @@
 <script>
 export default {
   name: 'AppHeader',
-  props: ['step'],
 }
 </script>
 

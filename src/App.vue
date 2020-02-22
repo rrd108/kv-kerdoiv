@@ -1,8 +1,8 @@
 <template>
   <div id="app">
-    <AppHeader :step="step" />
+    <AppHeader />
     <main class="row align-middle">
-      <Questionare @stepChange="stepChange($event)" />
+      <Questionare />
     </main>
   </div>
 </template>
@@ -16,16 +16,6 @@ export default {
   components: {
     AppHeader,
     Questionare
-  },
-  data() {
-    return {
-      step: 0,
-    }
-  },
-  methods: {
-    stepChange: function(step){
-      this.step = step
-    }
   }
 };
 </script>

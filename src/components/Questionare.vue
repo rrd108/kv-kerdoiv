@@ -1,7 +1,7 @@
 <template>
   <form @submit.prevent="send2API" class="column small-12">
 
-      <div v-show="step === 0">
+      <div v-show="$store.state.step === 0">
         <div class="row">
             <label for="email" class="column small-12">Email címed</label>
         </div>
@@ -13,7 +13,7 @@
         </div>
     </div>
 
-    <div v-show="step === 1">
+    <div v-show="$store.state.step === 1">
         <div class="row">
           <label for="city">Honnan érkeztél hozzánk?</label>
         </div>
@@ -28,7 +28,7 @@
       </div>
     </div>
 
-    <div v-show="step === 2">
+    <div v-show="$store.state.step === 2">
         <div class="row">
           <label for="age">Hány éves vagy?</label>
         </div>
@@ -41,7 +41,7 @@
       </div>
     </div>
 
-    <div v-show="step === 3">
+    <div v-show="$store.state.step === 3">
         <div class="row">
           <label>Honnan hallottál rólunk?</label>
         </div>
@@ -80,7 +80,7 @@
         </div>
     </div>
 
-    <div v-show="step === 4">
+    <div v-show="$store.state.step === 4">
         <div class="row">
           <label for="age">Hányadik alkalomal jársz nálunk?</label>
         </div>
@@ -93,7 +93,7 @@
       </div>
     </div>
 
-    <div v-show="step === 5">
+    <div v-show="$store.state.step === 5">
       <div class="row">
         <label for="age">Mennyire tetszett?</label>
       </div>
@@ -115,7 +115,7 @@
       </div>
     </div>
 
-    <div v-show="step === 6">
+    <div v-show="$store.state.step === 6">
       <div class="row">
         <h3>{{serviceGroup}}</h3>
       </div>
@@ -143,13 +143,13 @@
       </div>
     </div>
 
-    <div class="row align-center" v-show="step < 7">
-        <button v-show="!step" class="button" @click.prevent="stepChange(1)">Start!</button>
-        <button v-show="step" class="button" @click.prevent="stepChange(-1)"><i class="fi-arrow-left"></i></button>
-        <button v-show="step" class="button" @click.prevent="stepChange(1)"><i class="fi-arrow-right"></i></button>
+    <div class="row align-center" v-show="$store.state.step < 7">
+        <button v-show="!$store.state.step" class="button" @click.prevent="$store.commit('increaseStep')">Start!</button>
+        <button v-show="$store.state.step" class="button" @click.prevent="$store.commit('decreaseStep')"><i class="fi-arrow-left"></i></button>
+        <button v-show="$store.state.step" class="button" @click.prevent="$store.commit('increaseStep')"><i class="fi-arrow-right"></i></button>
     </div>
 
-    <div v-show="step === 7">
+    <div v-show="$store.state.step === 7">
       <div class="row">
             <label for="newsletter" class="column small-12">Hírlevél feliratkozás</label>
         </div>
@@ -194,7 +194,8 @@ export default {
         ['ett', 'Étterem', 0],
         ['gos', 'Tehénvédelmi központ', 0],
         ['kert', 'Kertészet', 0],
-        ['szab', 'Szabadtér', 0]],
+        ['szab', 'Szabadtér', 0]
+        ],
       services: {
         'Vendégvezetés' :
           [
@@ -219,7 +220,6 @@ export default {
         },
       serviceGroup: '',
       sg: '',
-      step: 0,
       visits: 1,
     }
   },
@@ -231,12 +231,6 @@ export default {
     if (this.serviceGroup == 'Étterem') this.sg = 'ett'
     if (this.serviceGroup == 'Ajándékbolt') this.sg = 'sh'
   },
-  methods : {
-    stepChange: function(step){
-        this.step += step
-        this.$emit('stepChange', this.step)
-    },
-
     send2API: function(){
       axios.post(
         process.env.VUE_APP_API_URL,
@@ -256,8 +250,9 @@ export default {
         }
       )
       .then(resp => {
-        this.step = 0
         console.log(resp)
+
+        this.$store.commit('setStep', 0)
       })
       .catch(error => console.error(error))
 

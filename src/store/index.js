@@ -5,10 +5,11 @@ Vue.use(Vuex);
 
 export default new Vuex.Store({
   state: {
-    step: 1,
+    step: 0,
   },
   mutations: {
     increaseStep: (state) => state.step++,
+    decreaseStep: (state) => state.step--,
     setStep: (state, step) => state.step = step,
   },
   actions: {},
