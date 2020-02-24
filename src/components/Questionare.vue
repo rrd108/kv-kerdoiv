@@ -384,6 +384,8 @@ export default {
           this.services[this.serviceGroup].forEach(service => (service[2] = 0));
           this.newsletter = true;
           this.setServiceGroup();
+
+          // TODO display thanks page
         })
         .catch(error => console.error(error));
 

@@ -1,8 +1,9 @@
 <template>
   <div id="app">
     <AppHeader />
-    <main class="row align-middle">
-      <Questionare />
+    <main class="row">
+      <Stats v-if="url == '/admin'" />
+      <Questionare v-if="url != '/admin'" class="align-middle" />
     </main>
   </div>
 </template>
@@ -10,12 +11,20 @@
 <script>
 import AppHeader from "./components/AppHeader.vue";
 import Questionare from "./components/Questionare.vue";
+import Stats from "./components/Stats.vue";
 
 export default {
   name: "app",
   components: {
     AppHeader,
-    Questionare
+    Questionare,
+    Stats
+  },
+
+  data() {
+    return {
+      url : window.location.pathname
+    }
   }
 };
 </script>
