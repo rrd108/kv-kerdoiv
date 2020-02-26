@@ -18,22 +18,56 @@ $months = ['január', 'február', 'március', 'április', 'május', 'június', '
 
 if ($_SERVER['REQUEST_METHOD'] == 'GET') {
     //TODO check API key
-    if($_GET['data'] == 'filled') {
+    if($_GET['data'] == 'all') {
+        // filled and newsletter subscribers
         $pdo = new PDO('mysql:host=localhost;dbname=' . $secrets['mysqlTable'], $secrets['mysqlUser'], $secrets['mysqlPass']);
-        $result = $pdo->query("SELECT MONTH(created) as month, COUNT(created) as filled, SUM(newsletter) as newsletter
+        $result = $pdo->query("SELECT MONTH(created) as month, COUNT(id) as filled, SUM(newsletter) as newsletter
             FROM questionare
             GROUP BY MONTH(created)")->fetchAll();
 
         $data = new stdClass;
+        $data->filled = new stdClass;
         foreach ($result as $r) {
-            $data->labels[] = $months[$r['month'] - 1];
-            $data->datasets[0]['data'][] = $r['filled'];
-            $data->datasets[1]['data'][] = $r['newsletter'];
+            $data->filled->labels[] = $months[$r['month'] - 1];
+            $data->filled->datasets[0]['data'][] = $r['filled'];
+            $data->filled->datasets[1]['data'][] = $r['newsletter'];
         }
-        // TODO move these to vue ?
-        $data->datasets[0]['label'] = 'Kitöltött kérdőívek';
-        $data->datasets[1]['backgroundColor'] = '#f87979';
-        $data->datasets[1]['label'] = 'Hírlevél feliratkozók';
+
+        // cities
+        $result = $pdo->query("SELECT COUNT(id) AS db, city
+            FROM questionare
+            GROUP BY city")->fetchAll();
+        $data->city = new stdClass;
+        foreach ($result as $r) {
+            $data->city->labels[] = $r['city'];
+            $data->city->datasets[0]['data'][] = $r['db'];
+        }
+
+        // age
+        $result = $pdo->query("SELECT COUNT(id) AS db, age
+            FROM questionare
+            GROUP BY age
+            ORDER BY age")->fetchAll();
+        $data->age = new stdClass;
+        foreach ($result as $r) {
+            $data->age->labels[] = $r['age'] . ' év';
+            $data->age->datasets[0]['data'][] = $r['db'];
+        }
+        $data->age->datasets[0]['label'] = 'Életkor';
+
+        // heard
+        $result = $pdo->query("SELECT SUM(heard_fb) AS facebook, SUM(heard_kv) AS krisnavolgy, SUM(heard_inst) AS instagram, SUM(heard_plak) AS plakát, SUM(heard_ujs) AS újság
+            FROM questionare")->fetchAll();
+        $data->heard = new stdClass;
+        foreach ($result[0] as $heard => $r) {
+            if (is_string($heard)) {
+                $data->heard->labels[] = $heard;
+                $data->heard->datasets[0]['data'][] = $r[0];
+            }
+        }
+        $data->heard->datasets[0]['label'] = 'Honnan halottál rólunk?';
+        // TODO heard other
+
         echo json_encode($data);
         return;
     }

@@ -15,18 +15,38 @@
         <button class="button" type="submit">Belép</button>
       </div>
     </form>
-    <chart-filled v-if="isLoggedIn && chartFilledLoaded" :chartdata="chartFilledData" :options="chartFilledOptions" />
+
+    <div v-if="chartLoaded">
+      <!-- TODO date select -->
+      <h1>Kitöltött kérdőívek és hírlevél feliratkozások</h1>
+      <chart-filled :chartdata="chartFilledData" :options="chartFilledOptions" />
+
+      <h1>Honnan jöttél?</h1>
+      <chart-city :chartdata="chartCityData" :options="chartCityOptions" />
+
+      <h1>Hány éves vagy?</h1>
+      <chart-age :chartdata="chartAgeData" :options="chartAgeOptions" />
+
+      <h1>Honnan halottál rólunk?</h1>
+      <chart-heard :chartdata="chartHeardData" :options="chartHeardOptions" />
+    </div>
   </div>
 </template>
 
 <script>
 import ChartFilled from '@/components/ChartFilled.vue'
+import ChartCity from '@/components/ChartCity.vue'
+import ChartAge from '@/components/ChartAge.vue'
+import ChartHeard from '@/components/ChartHeard.vue'
 import axios from 'axios'
 
 export default {
   name: 'Stats',
   components: {
-    ChartFilled
+    ChartFilled,
+    ChartCity,
+    ChartAge,
+    ChartHeard
   },
   data() {
     return {
@@ -34,7 +54,17 @@ export default {
       isLoggedIn: false,
       password: '',
 
-      chartFilledLoaded: false,
+      chartLoaded: false,
+
+      chartBackgrounds:  [
+        'rgba(255, 99, 132, 0.2)',
+        'rgba(54, 162, 235, 0.2)',
+        'rgba(255, 206, 86, 0.2)',
+        'rgba(75, 192, 192, 0.2)',
+        'rgba(153, 102, 255, 0.2)',
+        'rgba(255, 159, 64, 0.2)'
+      ],
+
       chartFilledData: null,
       chartFilledOptions: {
         responsive: true,
@@ -46,17 +76,27 @@ export default {
             }
           }]
         }
-      }
+      },
+
+      chartCityData: null,
+      chartCityOptions: {
+        responsive: true,
+        maintainAspectRatio: false,
+      },
+
+      chartAgeData: null,
+      chartAgeOptions: {
+        responsive: true,
+        maintainAspectRatio: false,
+      },
+
+      chartHeardData: null,
+      chartHeardOptions: {
+        responsive: true,
+        maintainAspectRatio: false,
+      },
+
     }
-  },
-  async mounted () {
-    this.chartFilledLoaded = false
-    axios.get(process.env.VUE_APP_API_URL + '?data=filled')
-      .then(resp => {
-        this.chartFilledData = resp.data
-        this.chartFilledLoaded = true
-      })
-      .catch(err => console.error(err))
   },
   methods: {
     login: function() {
@@ -65,13 +105,25 @@ export default {
           email: this.email,
           password: this.password
         })
-      .then(resp => this.isLoggedIn = (resp.data == this.email))
+      .then(resp => {
+        this.isLoggedIn = (resp.data == this.email)
+        axios.get(process.env.VUE_APP_API_URL + '?data=all')
+          .then(resp => {
+            this.chartFilledData = resp.data.filled
+            this.chartFilledData.datasets[0].backgroundColor = this.chartBackgrounds[0]
+            this.chartFilledData.datasets[1].backgroundColor = this.chartBackgrounds[1]
+            this.chartCityData = resp.data.city
+            this.chartCityData.datasets[0].backgroundColor = this.chartBackgrounds
+            this.chartAgeData = resp.data.age
+            this.chartAgeData.datasets[0].backgroundColor = this.chartBackgrounds
+            this.chartHeardData = resp.data.heard
+            this.chartHeardData.datasets[0].backgroundColor = this.chartBackgrounds
+            this.chartLoaded = true
+          })
+          .catch(err => console.error(err))
+          })
       .catch(err => console.error(err))
     }
   }
 }
 </script>
-
-<style>
-
-</style>

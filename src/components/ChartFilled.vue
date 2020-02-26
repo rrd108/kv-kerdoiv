@@ -15,6 +15,9 @@ export default {
     }
   },
   mounted () {
+    this.chartdata.datasets[0].label = this.chartdata.datasets[0].data.reduce((a, b) => parseInt(a) + parseInt(b), 0) + ' Kitöltött kérdőív'
+    this.chartdata.datasets[1].label = this.chartdata.datasets[1].data.reduce((a, b) => parseInt(a) + parseInt(b), 0) + ' Hírlevél feliratkozó'
+
     this.renderChart(this.chartdata, this.options)
   }
 }

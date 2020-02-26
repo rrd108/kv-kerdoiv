@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <AppHeader />
-    <main class="row">
+    <main class="row align-middle">
       <Stats v-if="url == '/admin'" />
       <Questionare v-if="url != '/admin'" class="align-middle" />
     </main>
@@ -34,16 +34,18 @@ export default {
 @import url("./assets/foundation.min.css");
 @import url("./assets/foundation-icons.css");
 
+body {
+  background: url("./assets/background.png") #efdfd2 !important;
+}
+
 #app {
   font-family: "Quicksand", sans-serif;
-  background-color: #efdfd2;
   color: #574634;
-  background-image: url("./assets/background.png");
   min-height: 100vh;
   font-size: 2rem;
 }
 
-#app h3 {
+#app h1, #app h3 {
   font-family: "Quicksand", sans-serif;
   font-weight: bold;
 }
