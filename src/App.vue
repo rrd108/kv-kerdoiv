@@ -42,7 +42,7 @@ body {
   font-family: "Quicksand", sans-serif;
   color: #574634;
   min-height: 100vh;
-  font-size: 2rem;
+  font-size: 1.7rem;
 }
 
 #app h1, #app h3 {
@@ -52,7 +52,7 @@ body {
 
 #app label,
 #app input {
-  font-size: 2rem;
+  font-size: 1.7rem;
 }
 
 .faded {
@@ -61,5 +61,6 @@ body {
 }
 main {
   height: 90vh;
+  padding: 1rem;
 }
 </style>

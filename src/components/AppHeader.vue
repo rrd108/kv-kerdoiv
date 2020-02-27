@@ -1,9 +1,9 @@
 <template>
   <header class="row">
-    <div class="column small-4">
+    <div class="column">
       <img src="../assets/logo.png" />
     </div>
-    <nav class="column small-8">
+    <nav class="column">
       <h1>Kérdőív {{ this.$store.state.step + 1 }} / 8</h1>
     </nav>
   </header>

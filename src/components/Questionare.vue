@@ -26,17 +26,14 @@
         <label for="city">Honnan érkeztél hozzánk?</label>
       </div>
       <div class="row">
-        <p class="faded column small-12">Külföld / Budapest / Megye neve</p>
+        <p class="faded column small-12">Budapest / Megye neve / Külföld</p>
       </div>
       <div class="row">
-        <input
-          v-model="city"
-          type="text"
-          list="cities"
-          autocomplete="off"
-          id="city"
-          placeholder="Megye"
-        />
+        <select v-model="city">
+          <option v-for="c in cities" :key="c">
+            {{c}}
+          </option>
+        </select>
         <datalist id="cities">
           <option v-for="city in cities" :key="city.id">{{ city }}</option>
         </datalist>
@@ -175,6 +172,7 @@
             v-model="places[index][2]"
             inactive-color="#bbb"
             active-color="#574634"
+            :star-size="40"
             :max-rating="4"
             :show-rating="false"
           ></star-rating>
@@ -205,6 +203,7 @@
             v-model="services[serviceGroup][index][2]"
             inactive-color="#bbb"
             active-color="#574634"
+            :star-size="40"
             :max-rating="4"
             :show-rating="false"
           ></star-rating>
@@ -285,7 +284,6 @@ export default {
       age: 25,
       city: "",
       cities: [
-        "Külföld",
         "Budapest",
         "Bács-Kiskun",
         "Baranya",
@@ -305,7 +303,8 @@ export default {
         "Tolna",
         "Vas",
         "Veszprém",
-        "Zala"
+        "Zala",
+        "Külföld",
       ],
       email: "",
       egyeb: "",
