@@ -32,7 +32,7 @@
       <!-- TODO heardOther-->
 
       <h1>Hányadik alkalomal jársz nálunk?</h1>
-      <chart-radar :chartdata="chartVisitData" :options="chartVisitOptions" />
+      <chart-bar :chartdata="chartVisitData" :options="chartVisitOptions" />
 
       <h1>Mennyire tetszett?</h1>
 
@@ -49,6 +49,7 @@ import ChartFilled from '@/components/ChartFilled.vue'
 import ChartCity from '@/components/ChartCity.vue'
 import ChartRadar from '@/components/ChartRadar.vue'
 import ChartHeard from '@/components/ChartHeard.vue'
+import ChartBar from '@/components/ChartBar.vue'
 import axios from 'axios'
 
 export default {
@@ -58,6 +59,7 @@ export default {
     ChartCity,
     ChartRadar,
     ChartHeard,
+    ChartBar,
   },
   data() {
     return {
@@ -111,6 +113,13 @@ export default {
       chartVisitOptions: {
         responsive: true,
         maintainAspectRatio: false,
+        scales: {
+          yAxes: [{
+            ticks: {
+              beginAtZero: true
+            }
+          }]
+        }
       },
 
     }
