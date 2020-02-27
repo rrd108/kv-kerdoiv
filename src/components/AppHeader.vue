@@ -4,14 +4,15 @@
       <img src="../assets/logo.png" />
     </div>
     <nav class="column">
-      <h1>Kérdőív {{ this.$store.state.step + 1 }} / 8</h1>
+      <h1>Kérdőív<span v-show="url != '/admin'"> {{ this.$store.state.step + 1 }} / 8</span></h1>
     </nav>
   </header>
 </template>
 
 <script>
 export default {
-  name: "AppHeader"
+  name: "AppHeader",
+  props: ['url']
 };
 </script>
 

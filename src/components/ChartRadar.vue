@@ -2,7 +2,7 @@
 import { Radar } from 'vue-chartjs'
 
 export default {
-  name: 'ChartAge',
+  name: 'ChartRadar',
   extends: Radar,
   props: {
     chartdata: {

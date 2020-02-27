@@ -25,10 +25,21 @@
       <chart-city :chartdata="chartCityData" :options="chartCityOptions" />
 
       <h1>Hány éves vagy?</h1>
-      <chart-age :chartdata="chartAgeData" :options="chartAgeOptions" />
+      <chart-radar :chartdata="chartAgeData" :options="chartAgeOptions" />
 
       <h1>Honnan halottál rólunk?</h1>
       <chart-heard :chartdata="chartHeardData" :options="chartHeardOptions" />
+      <!-- TODO heardOther-->
+
+      <h1>Hányadik alkalomal jársz nálunk?</h1>
+      <chart-radar :chartdata="chartVisitData" :options="chartVisitOptions" />
+
+      <h1>Mennyire tetszett?</h1>
+
+      <h1>Mennyire vagy elégedett</h1>
+      <h2>Vendégvezetés</h2>
+      <h2>Étterem</h2>
+      <h2>Ajándékbolt</h2>
     </div>
   </div>
 </template>
@@ -36,7 +47,7 @@
 <script>
 import ChartFilled from '@/components/ChartFilled.vue'
 import ChartCity from '@/components/ChartCity.vue'
-import ChartAge from '@/components/ChartAge.vue'
+import ChartRadar from '@/components/ChartRadar.vue'
 import ChartHeard from '@/components/ChartHeard.vue'
 import axios from 'axios'
 
@@ -45,8 +56,8 @@ export default {
   components: {
     ChartFilled,
     ChartCity,
-    ChartAge,
-    ChartHeard
+    ChartRadar,
+    ChartHeard,
   },
   data() {
     return {
@@ -96,6 +107,12 @@ export default {
         maintainAspectRatio: false,
       },
 
+      chartVisitData: null,
+      chartVisitOptions: {
+        responsive: true,
+        maintainAspectRatio: false,
+      },
+
     }
   },
   methods: {
@@ -118,6 +135,8 @@ export default {
             this.chartAgeData.datasets[0].backgroundColor = this.chartBackgrounds
             this.chartHeardData = resp.data.heard
             this.chartHeardData.datasets[0].backgroundColor = this.chartBackgrounds
+            this.chartVisitData = resp.data.visits
+            this.chartVisitData.datasets[0].backgroundColor = this.chartBackgrounds
             this.chartLoaded = true
           })
           .catch(err => console.error(err))

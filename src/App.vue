@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <AppHeader />
+    <AppHeader :url="url"/>
     <main class="row align-middle">
       <Stats v-if="url == '/admin'" />
       <Questionare v-if="url != '/admin'" class="align-middle" />
@@ -45,7 +45,7 @@ body {
   font-size: 1.7rem;
 }
 
-#app h1, #app h3 {
+#app h1, #app h2, #app h3 {
   font-family: "Quicksand", sans-serif;
   font-weight: bold;
 }

@@ -68,6 +68,18 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
         $data->heard->datasets[0]['label'] = 'Honnan halottál rólunk?';
         // TODO heard other
 
+        // visits
+        $result = $pdo->query("SELECT COUNT(id) AS db, visits
+            FROM questionare
+            GROUP BY visits
+            ORDER BY visits")->fetchAll();
+        $data->visits = new stdClass;
+        foreach ($result as $r) {
+            $data->visits->labels[] = $r['visits'];
+            $data->visits->datasets[0]['data'][] = $r['db'];
+        }
+        $data->visits->datasets[0]['label'] = 'Látogatsok';
+
         echo json_encode($data);
         return;
     }
