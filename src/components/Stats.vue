@@ -132,25 +132,28 @@ export default {
           password: this.password
         })
       .then(resp => {
-        this.isLoggedIn = (resp.data == this.email)
-        axios.get(process.env.VUE_APP_API_URL + '?data=all')
-          .then(resp => {
-            this.chartFilledData = resp.data.filled
-            this.chartFilledData.datasets[0].backgroundColor = this.chartBackgrounds[0]
-            this.chartFilledData.datasets[1].backgroundColor = this.chartBackgrounds[1]
-            this.chartCityData = resp.data.city
-            this.chartCityData.datasets[0].backgroundColor = this.chartBackgrounds
-            this.chartAgeData = resp.data.age
-            this.chartAgeData.datasets[0].backgroundColor = this.chartBackgrounds
-            this.chartHeardData = resp.data.heard
-            this.chartHeardData.datasets[0].backgroundColor = this.chartBackgrounds
-            this.chartVisitData = resp.data.visits
-            this.chartVisitData.datasets[0].backgroundColor = this.chartBackgrounds
-            this.chartLoaded = true
-          })
-          .catch(err => console.error(err))
-          })
+        if (resp.data == this.email) {
+          this.isLoggedIn = true
+          axios.get(process.env.VUE_APP_API_URL + '?data=all')
+            .then(resp => {
+              this.chartFilledData = resp.data.filled
+              this.chartFilledData.datasets[0].backgroundColor = this.chartBackgrounds[0]
+              this.chartFilledData.datasets[1].backgroundColor = this.chartBackgrounds[1]
+              this.chartCityData = resp.data.city
+              this.chartCityData.datasets[0].backgroundColor = this.chartBackgrounds
+              this.chartAgeData = resp.data.age
+              this.chartAgeData.datasets[0].backgroundColor = this.chartBackgrounds
+              this.chartHeardData = resp.data.heard
+              this.chartHeardData.datasets[0].backgroundColor = this.chartBackgrounds
+              this.chartVisitData = resp.data.visits
+              this.chartVisitData.datasets[0].backgroundColor = this.chartBackgrounds
+              this.chartLoaded = true
+            })
+            .catch(err => console.error(err))
+        }
+      })
       .catch(err => console.error(err))
+
     }
   }
 }
