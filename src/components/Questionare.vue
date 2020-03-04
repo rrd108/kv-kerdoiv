@@ -1,6 +1,16 @@
 <template>
   <form @submit.prevent="send2API" class="column small-12">
-    <div v-show="$store.state.step === 0">
+    <div v-show="thanks">
+      <div class="row callout">
+        <h2>Köszönjük a válaszokat!</h2>
+        <p>Reméljük hamarosan újra találkozunk!</p>
+        <button class="close-button" type="button" @click="thanks = false">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+    </div>
+
+    <div v-show="$store.state.step === 0 && !thanks">
       <div class="row">
         <label for="email" class="column small-12">Email címed</label>
       </div>
@@ -214,7 +224,7 @@
       </div>
     </div>
 
-    <div class="row align-center" v-show="$store.state.step < 7">
+    <div class="row align-center" v-show="$store.state.step < 7 && !thanks">
       <button
         v-show="!$store.state.step"
         class="button"
@@ -268,6 +278,7 @@
         <button type="submit" name="subscribe" class="button">Beküldés</button>
       </div>
     </div>
+
   </form>
 </template>
 
@@ -339,6 +350,7 @@ export default {
       },
       serviceGroup: "",
       sg: "",
+      thanks: false,
       visits: 1
     };
   },
@@ -356,6 +368,8 @@ export default {
       if (this.serviceGroup == "Ajándékbolt") this.sg = "sh";
     },
     send2API: function() {
+      this.thanks = true
+      setTimeout(() => this.thanks = false, 5000);
       axios
         .post(process.env.VUE_APP_API_URL, {
           email: this.email,
