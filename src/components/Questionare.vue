@@ -345,7 +345,9 @@ export default {
         ],
         Ajándékbolt: [
           ["sh_val", "Választék", 0],
-          ["sh_kisz", "Kiszolgálás minősége", 0]
+          ["sh_kisz", "Kiszolgálás minősége", 0],
+          ["sh_ar", "Termékek árai", 0],
+          ["sh_min", "Termékek minősége", 0]
         ]
       },
       serviceGroup: "",

@@ -120,7 +120,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         $pdo->setAttribute(PDO::ATTR_EMULATE_PREPARES, false);
 
-        $stmt = $pdo->prepare("INSERT INTO questionare (email, city, age, heard_fb, heard_kv, heard_inst, heard_plak, heard_ujs, heard_other, visits, tpl, ett, gos, kert, szab, vv_felk, vv_inf, vv_eloa, vv_seg, ett_val, ett_gyo, ett_men, ett_min, ett_ar, sh_val, sh_kisz, newsletter, vv_egyeb, ett_egyeb, sh_egyeb) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
+        $stmt = $pdo->prepare("INSERT INTO questionare (email, city, age, heard_fb, heard_kv, heard_inst, heard_plak, heard_ujs, heard_other, visits, tpl, ett, gos, kert, szab, vv_felk, vv_inf, vv_eloa, vv_seg, ett_val, ett_gyo, ett_men, ett_min, ett_ar, sh_val, sh_kisz, sh_ar, sh_min, newsletter, vv_egyeb, ett_egyeb, sh_egyeb) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
 
         $stmt->bindValue(1, $data->email);
         $stmt->bindValue(2, $data->city);
@@ -221,13 +221,19 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 if($service[0] == 'sh_kisz') {
                     $stmt->bindValue(26, $service[2]);
                 }
+                if($service[0] == 'sh_ar') {
+                    $stmt->bindValue(27, $service[2]);
+                }
+                if($service[0] == 'sh_min') {
+                    $stmt->bindValue(28, $service[2]);
+                }
             }
         }
 
-        $stmt->bindValue(27, $data->newsletter ? 1 : 0);
-        $stmt->bindValue(28, $data->vv_egyeb);
-        $stmt->bindValue(29, $data->ett_egyeb);
-        $stmt->bindValue(30, $data->sh_egyeb);
+        $stmt->bindValue(29, $data->newsletter ? 1 : 0);
+        $stmt->bindValue(30, $data->vv_egyeb);
+        $stmt->bindValue(31, $data->ett_egyeb);
+        $stmt->bindValue(32, $data->sh_egyeb);
 
         $stmt->execute();
 
