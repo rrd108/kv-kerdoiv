@@ -55,7 +55,7 @@
         <label for="age">Hány éves vagy?</label>
       </div>
       <div class="row">
-        <p class="faded column small-12">Életkorod</p>
+        <p class="faded column small-12">Használd a csúszkát</p>
       </div>
       <div class="row">
         <input
@@ -174,10 +174,10 @@
         <p class="faded column small-12">Ha nem láttad, akkor hagyd üresen</p>
       </div>
       <div class="row" v-for="(place, index) in places" :key="place[0]">
-        <div class="column small-6">
+        <div class="column small-6 medium-7 large-8">
           <label>{{ place[1] }}</label>
         </div>
-        <div class="column small-6">
+        <div class="column small-6 medium-5 large-4">
           <star-rating
             v-model="places[index][2]"
             inactive-color="#bbb"
@@ -205,10 +205,10 @@
         v-for="(service, index) in services[serviceGroup]"
         :key="service[0]"
       >
-        <div class="column small-6">
+        <div class="column small-6 medium-9 large-9">
           <label>{{ service[1] }}</label>
         </div>
-        <div class="column small-6">
+        <div class="column small-6 medium-3 large-3">
           <star-rating
             v-model="services[serviceGroup][index][2]"
             inactive-color="#bbb"
@@ -265,7 +265,6 @@
           v-model="newsletter"
           id="newsletter"
           type="checkbox"
-          style="width:1em"
           checked
         />
         <label for="newsletter">Feliratkozom</label>
@@ -464,5 +463,9 @@ export default {
   border-radius: 50%;
   background: #574634;
   cursor: pointer;
+}
+input[type=checkbox] {
+  width: 1.5rem;
+  margin: 1rem;
 }
 </style>

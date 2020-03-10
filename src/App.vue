@@ -63,4 +63,16 @@ main {
   height: 90vh;
   padding: 1rem;
 }
+
+@media (min-width:961px) {
+  #app label, #app input, button.button {
+    font-size: 2.8rem;
+  }
+  button.button {
+    padding: 1rem 1.25rem;
+  }
+  .faded {
+    font-size: 2rem;
+  }
+}
 </style>
