@@ -1,7 +1,7 @@
 <template>
   <header class="row">
     <div class="column">
-      <img src="../assets/logo.png" />
+      <a href="https://kerdoiv.krisnavolgy.hu"><img src="../assets/logo.png" /></a>
     </div>
     <nav class="column">
       <h1>Kérdőív<span v-show="url != '/admin'"> {{ this.$store.state.step + 1 }} / 8</span></h1>
