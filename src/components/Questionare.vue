@@ -402,7 +402,10 @@ export default {
     },
     send2API: function() {
       this.thanks = true
-      setTimeout(() => this.thanks = false, 5000);
+      // TODO check url and settimeout only if needed
+      if (window.location.href.search(/\?/) == -1) {
+        setTimeout(() => this.thanks = false, 5000);
+      }
       axios
         .post(process.env.VUE_APP_API_URL, {
           email: this.email,
