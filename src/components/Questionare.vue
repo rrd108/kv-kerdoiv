@@ -1,9 +1,41 @@
 <template>
   <form @submit.prevent="send2API" class="column small-12">
+
     <div v-show="thanks">
       <div class="row callout">
         <h2>Köszönjük a válaszokat!</h2>
-        <p>Reméljük hamarosan újra találkozunk!</p>
+        <p>Reméljük hamarosan újra találkozunk és addig is maradjunk kapcsolatban!</p>
+        <div class="column small-12">
+          <div class="row">
+            <i class="fi-social-facebook"></i>
+            <a href="https://www.facebook.com/krisnavolgy">Facebook: Krisna-völgy</a>
+          </div>
+
+          <div class="row">
+            <i class="fi-social-facebook"></i>
+            <a href="https://www.facebook.com/OnismeretiTaborok/">Facebook: Krisna-tudat, az önmegvalósítás tudománya</a>
+          </div>
+
+          <div class="row">
+            <i class="fi-social-500px"></i>
+            <a href="https://krisnavolgy.hu">Krisna-völgy weboldal</a>
+          </div>
+
+          <div class="row">
+            <i class="fi-social-instagram"></i>
+            <a href="https://www.instagram.com/krisnavolgy/">Instagram</a>
+          </div>
+
+          <div class="row">
+            <i class="fi-shopping-cart"></i>
+            <a href="https://bolt.krisnavolgy.hu">Webáruház</a>
+          </div>
+
+          <div class="row">
+            <i class="fi-mail"></i>
+            <a href="https://hirlevel.krisnavolgy.hu">Hírlevél</a>
+          </div>
+        </div>
         <button class="close-button" type="button" @click="thanks = false">
           <span aria-hidden="true">&times;</span>
         </button>
@@ -398,8 +430,6 @@ export default {
           this.services[this.serviceGroup].forEach(service => (service[2] = 0));
           this.newsletter = true;
           this.setServiceGroup();
-
-          // TODO display thanks page
         })
         .catch(error => console.error(error));
 
@@ -467,5 +497,9 @@ export default {
 input[type=checkbox] {
   width: 1.5rem;
   margin: 1rem;
+}
+.callout i {
+  margin-right: 1rem;
+  color: #2ba6cb;
 }
 </style>
