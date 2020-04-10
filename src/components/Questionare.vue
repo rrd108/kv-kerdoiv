@@ -314,8 +314,8 @@
 </template>
 
 <script>
-import StarRating from "vue-star-rating";
-import axios from "axios";
+import StarRating from "vue-star-rating"
+import axios from "axios"
 
 export default {
   components: {
@@ -385,26 +385,26 @@ export default {
       sg: "",
       thanks: false,
       visits: 1
-    };
+    }
   },
 
   created: function() {
-    this.setServiceGroup();
+    this.setServiceGroup()
   },
   methods: {
     setServiceGroup: function() {
-      let serviceGroups = Object.keys(this.services);
+      let serviceGroups = Object.keys(this.services)
       this.serviceGroup =
-        serviceGroups[(serviceGroups.length * Math.random()) << 0];
-      if (this.serviceGroup == "Vendégvezetés") this.sg = "vv";
-      if (this.serviceGroup == "Étterem") this.sg = "ett";
-      if (this.serviceGroup == "Ajándékbolt") this.sg = "sh";
+        serviceGroups[(serviceGroups.length * Math.random()) << 0]
+      if (this.serviceGroup == "Vendégvezetés") this.sg = "vv"
+      if (this.serviceGroup == "Étterem") this.sg = "ett"
+      if (this.serviceGroup == "Ajándékbolt") this.sg = "sh"
     },
     send2API: function() {
       this.thanks = true
       // TODO check url and settimeout only if needed
       if (window.location.href.search(/\?/) == -1) {
-        setTimeout(() => this.thanks = false, 5000);
+        setTimeout(() => this.thanks = false, 5000)
       }
       axios
         .post(process.env.VUE_APP_API_URL, {
@@ -422,19 +422,19 @@ export default {
           sh_egyeb: this.sg == "sh" ? this.egyeb : ""
         })
         .then(resp => {
-          console.log(resp);
+          console.log(resp)
 
-          this.$store.commit("setStep", 0);
-          this.email = this.city = this.heardOther = this.egyeb = this.sg = "";
-          this.age = 25;
-          this.heard = [];
-          this.visits = 1;
-          this.places.forEach(place => (place[2] = 0));
-          this.services[this.serviceGroup].forEach(service => (service[2] = 0));
-          this.newsletter = true;
-          this.setServiceGroup();
+          this.$store.commit("setStep", 0)
+          this.email = this.city = this.heardOther = this.egyeb = this.sg = ""
+          this.age = 25
+          this.heard = []
+          this.visits = 1
+          this.places.forEach(place => (place[2] = 0))
+          this.services[this.serviceGroup].forEach(service => (service[2] = 0))
+          this.newsletter = true
+          this.setServiceGroup()
         })
-        .catch(error => console.error(error));
+        .catch(error => console.error(error))
 
       if (this.newsletter) {
         axios
@@ -451,11 +451,11 @@ export default {
             ]
           })
           .then(resp => console.log(resp))
-          .catch(error => console.error(error));
+          .catch(error => console.error(error))
       }
     }
   }
-};
+}
 </script>
 
 <style>
