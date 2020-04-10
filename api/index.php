@@ -64,7 +64,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
         foreach ($result[0] as $heard => $r) {
             if (is_string($heard)) {
                 $data->heard->labels[] = $heard;
-                $data->heard->datasets[0]['data'][] = $r[0];
+                $data->heard->datasets[0]['data'][] = is_string($r) ? $r : $r[0];
             }
         }
         $data->heard->datasets[0]['label'] = 'Honnan halottál rólunk?';
@@ -80,7 +80,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
             $data->visits->labels[] = $r['visits'];
             $data->visits->datasets[0]['data'][] = $r['db'];
         }
-        $data->visits->datasets[0]['label'] = 'Látogatások';
+        $data->visits->datasets[0]['label'] = 'Vendég';
 
         // liked
         $result = $pdo->query("SELECT AVG(NULLIF(tpl, 0)) AS templom, AVG(NULLIF(ett, 0)) AS étterem, AVG(NULLIF(gos, 0)) AS gosala, AVG(NULLIF(kert, 0)) AS kert, AVG(NULLIF(szab, 0)) AS szabadtér
