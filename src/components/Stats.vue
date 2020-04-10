@@ -36,18 +36,24 @@
       <chart-radar :chartdata="chartAgeData" :options="chartAgeOptions" />
 
       <h1>Honnan halottál rólunk?</h1>
-      <chart-heard :chartdata="chartHeardData" :options="chartHeardOptions" />
+      <chart-doughnut :chartdata="chartHeardData" :options="chartHeardOptions" />
       <!-- TODO heardOther-->
 
       <h1>Hányadik alkalomal jársz nálunk?</h1>
       <chart-bar :chartdata="chartVisitData" :options="chartVisitOptions" />
 
       <h1>Mennyire tetszett?</h1>
+      <chart-bar :chartdata="chartLikedData" :options="chartLikedOptions" />
 
       <h1>Mennyire vagy elégedett</h1>
-      <h2>Vendégvezetés</h2>
-      <h2>Étterem</h2>
-      <h2>Ajándékbolt</h2>
+        <h2>Vendégvezetés</h2>
+        <chart-bar :chartdata="chartSatisfiedVvData" :options="chartLikedOptions" />
+
+        <h2>Étterem</h2>
+        <chart-bar :chartdata="chartSatisfiedEttData" :options="chartLikedOptions" />
+
+        <h2>Ajándékbolt</h2>
+        <chart-bar :chartdata="chartSatisfiedShData" :options="chartLikedOptions" />
     </div>
   </div>
 </template>
@@ -56,7 +62,7 @@
 import ChartFilled from '@/components/ChartFilled.vue'
 import ChartCity from '@/components/ChartCity.vue'
 import ChartRadar from '@/components/ChartRadar.vue'
-import ChartHeard from '@/components/ChartHeard.vue'
+import ChartDoughnut from '@/components/ChartDoughnut.vue'
 import ChartBar from '@/components/ChartBar.vue'
 import axios from 'axios'
 
@@ -66,7 +72,7 @@ export default {
     ChartFilled,
     ChartCity,
     ChartRadar,
-    ChartHeard,
+    ChartDoughnut,
     ChartBar,
   },
   data() {
@@ -84,6 +90,21 @@ export default {
         'rgba(75, 192, 192, 0.2)',
         'rgba(153, 102, 255, 0.2)',
         'rgba(255, 159, 64, 0.2)',
+        'rgba(255, 132, 99, 0.2)',
+        'rgba(88, 122, 255, 0.2)',
+        'rgba(204, 162, 235, 0.2)',
+        'rgba(54, 235, 162, 0.2)',
+        'rgba(255, 206, 235, 0.2)',
+        'rgba(255, 86, 206, 0.2)',
+        'rgba(204, 86, 235, 0.2)',
+        'rgba(153, 255, 102, 0.2)',
+        'rgba(255, 64, 159, 0.2)',
+        'rgba(255, 64, 235, 0.2)',
+        'rgba(0, 150, 150, 0.2)',
+        'rgba(150, 0, 150, 0.2)',
+        'rgba(150, 150, 0, 0.2)',
+        'rgba(80, 150, 80, 0.2)',
+        'rgba(80, 0, 80, 0.2)',
       ],
 
       chartFilledData: null,
@@ -133,6 +154,24 @@ export default {
           ],
         },
       },
+
+      chartLikedData: null,
+      chartSatisfiedVvData: null,
+      chartSatisfiedEttData: null,
+      chartSatisfiedShData: null,
+      chartLikedOptions: {
+        responsive: true,
+        maintainAspectRatio: false,
+        scales: {
+          yAxes: [
+            {
+              ticks: {
+                beginAtZero: true,
+              },
+            },
+          ],
+        },
+      },
     }
   },
   methods: {
@@ -151,14 +190,31 @@ export default {
                 this.chartFilledData = resp.data.filled
                 this.chartFilledData.datasets[0].backgroundColor = this.chartBackgrounds[0]
                 this.chartFilledData.datasets[1].backgroundColor = this.chartBackgrounds[1]
+
                 this.chartCityData = resp.data.city
                 this.chartCityData.datasets[0].backgroundColor = this.chartBackgrounds
+
                 this.chartAgeData = resp.data.age
                 this.chartAgeData.datasets[0].backgroundColor = this.chartBackgrounds
+
                 this.chartHeardData = resp.data.heard
                 this.chartHeardData.datasets[0].backgroundColor = this.chartBackgrounds
+
                 this.chartVisitData = resp.data.visits
                 this.chartVisitData.datasets[0].backgroundColor = this.chartBackgrounds
+
+                this.chartLikedData = resp.data.liked
+                this.chartLikedData.datasets[0].backgroundColor = this.chartBackgrounds
+
+                this.chartSatisfiedVvData = resp.data.satisfiedVv
+                this.chartSatisfiedVvData.datasets[0].backgroundColor = this.chartBackgrounds
+
+                this.chartSatisfiedEttData = resp.data.satisfiedEtt
+                this.chartSatisfiedEttData.datasets[0].backgroundColor = this.chartBackgrounds
+
+                this.chartSatisfiedShData = resp.data.satisfiedSh
+                this.chartSatisfiedShData.datasets[0].backgroundColor = this.chartBackgrounds
+
                 this.chartLoaded = true
               })
               .catch(err => console.error(err))

@@ -2,7 +2,7 @@
 import { Doughnut } from 'vue-chartjs'
 
 export default {
-  name: 'ChartHeard',
+  name: 'ChartDoughnut',
   extends: Doughnut,
   props: {
     chartdata: {

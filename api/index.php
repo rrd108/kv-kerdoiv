@@ -2,6 +2,8 @@
 
 use PDO;
 
+// TODO do not responde to api calls without authentication
+
 require('./secrets.php');
 
 if($secrets['debug']) {
@@ -78,7 +80,57 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
             $data->visits->labels[] = $r['visits'];
             $data->visits->datasets[0]['data'][] = $r['db'];
         }
-        $data->visits->datasets[0]['label'] = 'Látogatsok';
+        $data->visits->datasets[0]['label'] = 'Látogatások';
+
+        // liked
+        $result = $pdo->query("SELECT AVG(NULLIF(tpl, 0)) AS templom, AVG(NULLIF(ett, 0)) AS étterem, AVG(NULLIF(gos, 0)) AS gosala, AVG(NULLIF(kert, 0)) AS kert, AVG(NULLIF(szab, 0)) AS szabadtér
+            FROM questionare")->fetchAll();
+        $data->liked = new stdClass;
+        foreach ($result[0] as $liked => $r) {
+            if (is_string($liked)) {
+                $data->liked->labels[] = $liked;
+                $data->liked->datasets[0]['data'][] = is_string($r) ? $r : $r[0];
+            }
+        }
+        $data->liked->datasets[0]['label'] = 'Mennyire tetszett?';
+
+        //satisfied
+        // TODO add egyéb mindháromhoz
+        //vv
+        $result = $pdo->query("SELECT AVG(NULLIF(vv_felk, 0)) AS felkészültség, AVG(NULLIF(vv_inf, 0)) AS információ, AVG(NULLIF(vv_eloa, 0)) AS előadás, AVG(NULLIF(vv_seg, 0)) AS segítőkészség
+            FROM questionare")->fetchAll();
+        $data->satisfiedVv = new stdClass;
+        foreach ($result[0] as $satisfiedVv => $r) {
+            if (is_string($satisfiedVv)) {
+                $data->satisfiedVv->labels[] = $satisfiedVv;
+                $data->satisfiedVv->datasets[0]['data'][] = is_string($r) ? $r : $r[0];
+            }
+        }
+        $data->satisfiedVv->datasets[0]['label'] = 'Vendégvezetés';
+
+        //ett
+        $result = $pdo->query("SELECT AVG(NULLIF(ett_val, 0)) AS választék, AVG(NULLIF(ett_gyo, 0)) AS gyorsaság, AVG(NULLIF(ett_men, 0)) AS menü, AVG(NULLIF(ett_min, 0)) AS minőség, AVG(NULLIF(ett_ar, 0)) AS ár
+            FROM questionare")->fetchAll();
+        $data->satisfiedEtt = new stdClass;
+        foreach ($result[0] as $satisfiedEtt => $r) {
+            if (is_string($satisfiedEtt)) {
+                $data->satisfiedEtt->labels[] = $satisfiedEtt;
+                $data->satisfiedEtt->datasets[0]['data'][] = is_string($r) ? $r : $r[0];
+            }
+        }
+        $data->satisfiedEtt->datasets[0]['label'] = 'Étterem';
+
+        //shop
+        $result = $pdo->query("SELECT AVG(NULLIF(sh_val, 0)) AS választék, AVG(NULLIF(sh_kisz, 0)) AS kiszolgálás, AVG(NULLIF(sh_ar, 0)) AS ár, AVG(NULLIF(sh_min, 0)) AS minőség
+            FROM questionare")->fetchAll();
+        $data->satisfiedSh = new stdClass;
+        foreach ($result[0] as $satisfiedSh => $r) {
+            if (is_string($satisfiedSh)) {
+                $data->satisfiedSh->labels[] = $satisfiedSh;
+                $data->satisfiedSh->datasets[0]['data'][] = is_string($r) ? $r : $r[0];
+            }
+        }
+        $data->satisfiedSh->datasets[0]['label'] = 'Ajándékbolt';
 
         echo json_encode($data);
         return;
