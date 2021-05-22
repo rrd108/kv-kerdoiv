@@ -23,14 +23,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
     if($_GET['data'] == 'all') {
         // filled and newsletter subscribers
         $pdo = new PDO('mysql:host=localhost;dbname=' . $secrets['mysqlTable'], $secrets['mysqlUser'], $secrets['mysqlPass']);
-        $result = $pdo->query("SELECT MONTH(created) as month, COUNT(id) as filled, SUM(newsletter) as newsletter
+        $result = $pdo->query("SELECT DATE_FORMAT(created, '%Y-%m') as month, COUNT(id) as filled, SUM(newsletter) as newsletter
             FROM questionare
-            GROUP BY MONTH(created)")->fetchAll();
+            GROUP BY month")->fetchAll();
 
         $data = new stdClass;
         $data->filled = new stdClass;
         foreach ($result as $r) {
-            $data->filled->labels[] = $months[$r['month'] - 1];
+            $data->filled->labels[] = $r['month'];
             $data->filled->datasets[0]['data'][] = $r['filled'];
             $data->filled->datasets[1]['data'][] = $r['newsletter'];
         }
